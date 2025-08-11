@@ -27,6 +27,8 @@ DESC
   s.source           = { :git => 'https://github.com/EastApex/EAHisCompressLib.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '14.0'
+  # 指定 Swift 版本（根据你的实际版本填写）
+  s.swift_versions = "5.9"
   
   s.frameworks   = "UIKit", "Foundation","CoreGraphics"
   
