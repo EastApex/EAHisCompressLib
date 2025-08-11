@@ -31,7 +31,7 @@ DESC
   s.frameworks   = "UIKit", "Foundation","CoreGraphics"
   
   s.source_files = [
-    'SCompressLib/**/*',
+    #'SCompressLib/**/*',
     'Classes/*.{h,m,swift}'
     ]
 
