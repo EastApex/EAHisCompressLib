@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'EAHisCompress'
-  s.version          = '1.0.1'
+  s.version          = '1.0.1.3'
   s.summary          = 'A short description of EAHisCompress.'
 
 # This description is used to generate tags and improve search results.
@@ -31,13 +31,13 @@ DESC
   s.frameworks   = "UIKit", "Foundation","CoreGraphics"
   
   s.source_files = [
-    'EAHisCompress/SCompressLib/**/*',
-    'EAHisCompress/Classes/**/*.{h,m,swift}'
+    'SCompressLib/**/*',
+    'Classes/**/*.{h,m,swift}'
     ]
 
 
-    s.vendored_frameworks = [
-        'EAHisCompress/SCompressLib.framework'
+    s.ios.vendored_frameworks = [
+        'SCompressLib.framework'
     ]
 
 
