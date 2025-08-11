@@ -17,6 +17,18 @@ var _isBg = false;
 
 @objc public class EAHisCompress: NSObject {
     
+    
+    @objc public func eaCompress(image:UIImage ,isBg:Bool,completion: @escaping (String) -> Void)   {
+        
+        onCompressedPath = { path in
+        
+            completion(path)
+        }
+        compress(image: image, isBg: isBg);
+
+    }
+    
+    
     func extractPixelData(from image: UIImage) -> (redChannel: [UInt8], greenChannel: [UInt8], blueChannel: [UInt8], alphaChannel: [UInt8])? {
         guard let cgImage = image.cgImage else { return nil }
         let width = Int(image.size.width)
@@ -58,8 +70,10 @@ var _isBg = false;
         return (redChannel, greenChannel, blueChannel, alphaChannel)
     }
     
+    // 定义路径回调
+    var onCompressedPath: ((String) -> Void)?
     
-    @objc public func compress(image:UIImage,isBg:Bool)  {
+    @objc public func compress(image:UIImage,isBg:Bool) {
         
         _isBg = isBg;
         let width = Int(image.size.width)
@@ -95,10 +109,14 @@ var _isBg = false;
             sParam.alphaChannel = result.alphaChannel
         }
         print("red channel len = \(sParam.redChannel.count)")
-        let picApi = SPicZipApi()
-        SetZipEvent(picEvent: MyZipRets())
-        picApi.Compress(compressParam: sParam)
         
+        var zipRets = MyZipRets()
+        zipRets.onCompressedPath = onCompressedPath
+        
+        
+        let picApi = SPicZipApi()
+        SetZipEvent(picEvent: zipRets)
+        picApi.Compress(compressParam: sParam)
     }
 
 }
@@ -130,11 +148,11 @@ public func WriteCompressedFile(name : String, compressedData : [UInt8]) {
 
 
 
-public func WriteCompressedFile(compressedData : [UInt8]) {
+public func WriteCompressedFile(compressedData : [UInt8]) -> String  {
     
     let basedFilePath = NSHomeDirectory() + "/Documents"
     let fileManager = FileManager.default
-    var name = _isBg ?  "bg" : "thumbnail";
+    let name = _isBg ?  "bg" : "thumbnail";
     _fullPath = basedFilePath + "/Compressed_" + name + ".bin"
     print("fullPath = \(_fullPath)")
     let exist = fileManager.fileExists(atPath: _fullPath)
@@ -149,21 +167,26 @@ public func WriteCompressedFile(compressedData : [UInt8]) {
         let data = Data(bytes: compressedData, count: compressedData.count)
         fileManager.createFile(atPath: _fullPath, contents: data)
     }
+
+    return _fullPath
 }
 
 
 struct MyZipRets : PicZipEvent {
   
+    // 定义路径回调
+    var onCompressedPath: ((String) -> Void)?
+    
     func DecompressRets(id: Int, state: Int, decomRets: SCompressLib.SDecompressRets) {
-        let imageWidth = Int(decomRets.width)
-        let imageHeight = Int(decomRets.height)
         drawRect(decomRets: decomRets)
         print("decompress id ====== \(id)")
        
     }
     
     func CompressRets(id: Int, state: Int, tileWidth: Int, retData: [UInt8]) {
-        WriteCompressedFile(compressedData: retData)
+       let path =  WriteCompressedFile(compressedData: retData)
+        // 触发回调，传递路径
+        onCompressedPath?(path)
     }
 }
 
