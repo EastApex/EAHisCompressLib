@@ -31,13 +31,13 @@ DESC
   s.frameworks   = "UIKit", "Foundation","CoreGraphics"
   
   s.source_files = [
-    'SCompressLib/**/*',
-    "Classes/**/*.{h,m,swift}"
+    'EAHisCompress/SCompressLib/**/*',
+    'EAHisCompress/Classes/**/*.{h,m,swift}'
     ]
 
 
     s.vendored_frameworks = [
-        'SCompressLib.framework'
+        'EAHisCompress/SCompressLib.framework'
     ]
 
 
