@@ -30,10 +30,7 @@ DESC
   
   s.frameworks   = "UIKit", "Foundation","CoreGraphics"
   
-  s.source_files = [
-    #'SCompressLib/**/*',
-    'Classes/*.{h,m,swift}'
-    ]
+  s.source_files = "*.{swift}"
 
 
     s.ios.vendored_frameworks = [
