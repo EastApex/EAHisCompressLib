@@ -32,7 +32,7 @@ DESC
   
   s.source_files = [
     'SCompressLib/**/*',
-    'Classes/**/*.{h,m,swift}'
+    'Classes/*.{h,m,swift}'
     ]
 
 
