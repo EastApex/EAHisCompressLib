@@ -28,9 +28,11 @@ DESC
 
   s.ios.deployment_target = '14.0'
   
+  s.frameworks   = "UIKit", "Foundation","CoreGraphics"
+  
   s.source_files = [
     'SCompressLib/**/*',
-    '*.swift'
+    "Classes/**/*.{h,m,swift}"
     ]
 
 
