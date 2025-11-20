@@ -1,0 +1,11 @@
+framework module WatchConnectKit {
+  umbrella header "WatchConnectKit.h"
+  export *
+
+  module * { export * }
+}
+
+module WatchConnectKit.Swift {
+  header "WatchConnectKit-Swift.h"
+  requires objc
+}

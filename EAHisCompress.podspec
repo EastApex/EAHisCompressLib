@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'EAHisCompress'
-  s.version          = '1.0.2'
+  s.version          = '1.0.3'
   s.summary          = 'A short description of EAHisCompress.'
 
 # This description is used to generate tags and improve search results.
@@ -36,7 +36,8 @@ DESC
 
 
   s.ios.vendored_frameworks = [
-        'SCompressLib.framework'
+        'SCompressLib.framework',
+        'WatchConnectKit.framework'
     ]
 
 

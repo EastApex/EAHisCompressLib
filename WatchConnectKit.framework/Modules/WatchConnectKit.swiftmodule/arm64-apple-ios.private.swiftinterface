@@ -1,0 +1,300 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.2 effective-5.10 (swiftlang-6.0.2.1.2 clang-1600.0.26.4)
+// swift-module-flags: -target arm64-apple-ios15.6 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name WatchConnectKit
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import CoreBluetooth
+import Foundation
+import Swift
+import UIKit
+@_exported import WatchConnectKit
+import WatchConnectivity
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum KitState {
+  case initFailed
+  case unknown
+  case poweredOff
+  case poweredOn
+  case resetting
+  case unsupported
+  case unauthorized
+  case connectSucceed
+  case connectFailed
+  case connectDisappear
+  public static func == (a: WatchConnectKit.KitState, b: WatchConnectKit.KitState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class WatchConnectManager : ObjectiveC.NSObject {
+  @objc deinit
+}
+extension WatchConnectKit.WatchConnectManager : CoreBluetooth.CBCentralManagerDelegate, CoreBluetooth.CBPeripheralDelegate {
+  @objc dynamic public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDiscover peripheral: CoreBluetooth.CBPeripheral, advertisementData: [Swift.String : Any], rssi RSSI: Foundation.NSNumber)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didConnect peripheral: CoreBluetooth.CBPeripheral)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDisconnectPeripheral peripheral: CoreBluetooth.CBPeripheral, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverServices error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverCharacteristicsFor service: CoreBluetooth.CBService, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didWriteValueFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateNotificationStateFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
+}
+public class WatchConnectEngine {
+  public var watchConnectManager: WatchConnectKit.WatchConnectManager?
+  public var connectReply: ((WatchConnectKit.KitState) -> Swift.Void)?
+  public var srcPkgName: Swift.String
+  public var dstPkgName: Swift.String
+  public init()
+  public func getBondedDevices(getBondedDevicesCallBack: @escaping WatchConnectKit.OnDeviceListResult)
+  public func isAppInstalled(_ peer: WatchConnectKit.Peer, installCallBack: @escaping WatchConnectKit.OnPingResult)
+  public func cancelFileTransfer(peer: WatchConnectKit.Peer, message: WatchConnectKit.Message, cancelFileTransferCallBack: @escaping WatchConnectKit.CancelFileTransferCallBack)
+  public func notify(device: WatchConnectKit.Device, notification: WatchConnectKit.BLNotification, onError: WatchConnectKit.onError?, onResult: WatchConnectKit.onResult?)
+  public func registerReceiver(_ peer: WatchConnectKit.Peer, _ receiverCallback: @escaping WatchConnectKit.onReceiveMessage)
+  public func unregisterReceiver(_ peer: WatchConnectKit.Peer, _ receiverCallback: @escaping WatchConnectKit.onReceiveMessage)
+  public func ping(peer: WatchConnectKit.Peer, pingCallback: @escaping WatchConnectKit.OnPingResult)
+  public func getAppVersion(peer: WatchConnectKit.Peer, versionCallback: @escaping WatchConnectKit.OnVersionResult)
+  public func send(peer: WatchConnectKit.Peer, message: WatchConnectKit.Message, onSendProgress: @escaping WatchConnectKit.OnSendProgress, onSendResult: @escaping WatchConnectKit.OnSendResult)
+  public func getAvailableKbytes(device: WatchConnectKit.Device, getAvailableKbytesCallBack: @escaping WatchConnectKit.GetAvailableKbytesCallback)
+  @objc deinit
+}
+extension WatchConnectKit.WatchConnectEngine {
+  public func internal_isAppInstalled(_ peer: WatchConnectKit.Peer, installCallBack: @escaping WatchConnectKit.OnPingResult)
+  public func sendBtCmd(cmd: [Swift.UInt8], isAdd: Swift.Bool)
+}
+extension WatchConnectKit.WatchConnectEngine {
+  public func notifydownloadfilestatus(filename: Swift.String, SeqId: Swift.CShort, SrcPkgName: Swift.String, DestPkgName: Swift.String, status: Swift.Int)
+  public func sendMessageToXimalaya(msg: [Swift.UInt8], SeqIdpara: Swift.CShort, SrcPkgName: Swift.String, DstPkgName: Swift.String)
+  public func checkPackageIsInstall(scheme: Swift.String) -> Swift.Bool
+}
+public typealias OnInstallAppResult = (_ code: Swift.Int, _ msg: Swift.String) -> Swift.Void
+public typealias OnUninstallAppResult = (_ code: Swift.Int, _ msg: Swift.String) -> Swift.Void
+public typealias OnInstallStatusListResult = (_ appList: [WatchConnectKit.AppInfo]) -> Swift.Void
+public typealias OnPingResult = (Swift.Int) -> Swift.Void
+public typealias OnVersionResult = (Swift.Int) -> Swift.Void
+public protocol PingCallback : AnyObject {
+  func onPingResult(_ errCode: Swift.Int)
+}
+public typealias OnDeviceListResult = (_ devices: [WatchConnectKit.Device]) -> Swift.Void
+public typealias onReceiveMessage = (_ message: WatchConnectKit.Message) -> Swift.Void
+public typealias OnSendProgress = (Swift.Double) -> Swift.Void
+public typealias OnSendResult = (Swift.Int) -> Swift.Void
+public typealias CancelFileTransferCallBack = (Swift.Int) -> Swift.Void
+public typealias GetAvailableKbytesCallback = (_ freeSize: Swift.Int64) -> Swift.Void
+@_hasMissingDesignatedInitializers public class ParseAppStoreAppList {
+  @objc deinit
+}
+public enum FrameStatus {
+  case NO_FRAME
+  case FRAME_START
+  case FRAME_EXECUTE
+  case FRAME_END
+  public static func == (a: WatchConnectKit.FrameStatus, b: WatchConnectKit.FrameStatus) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct JavaScriptCallNativeInnerParam {
+  public var packageName: Swift.String?
+  public var appName: Swift.String?
+  public var url: Swift.String?
+  public var fileName: Swift.String?
+  public var checkSum: Swift.String?
+  public init()
+}
+public enum TaskType {
+  case downloadTask
+  case uploadTask
+  public static func == (a: WatchConnectKit.TaskType, b: WatchConnectKit.TaskType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum FrameType {
+  case request
+  case finish
+  case stop
+  public static func == (a: WatchConnectKit.FrameType, b: WatchConnectKit.FrameType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol DataTransferCallback {
+  func onStart(taskType: WatchConnectKit.TaskType)
+  func onFinish(taskType: WatchConnectKit.TaskType, args: Swift.String...)
+  func onStop(taskType: WatchConnectKit.TaskType)
+  func onError(taskType: WatchConnectKit.TaskType, message: Swift.String)
+  func onExecute(taskType: WatchConnectKit.TaskType, progress: Swift.Double, rate: Swift.Int64, sentSize: Swift.Int64, totalSize: Swift.Int64)
+  func sendCmd(cmd: [Swift.UInt8])
+  func onUploadNext(taskType: WatchConnectKit.TaskType, currentFile: Swift.String, currentIndex: Swift.Int, total: Swift.Int)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class GlobalApplication : ObjectiveC.NSObject {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CommonConstants {
+  public static var maximumWriteValueLength: Swift.Int
+  public static let DEBUG: Swift.String
+  public static let INFO: Swift.String
+  public static let WARN: Swift.String
+  public static let ERROR: Swift.String
+  public static let TRANS_FER_SOF: Swift.UInt8
+  public static let TRANS_FER_CTRL: Swift.UInt8
+  public static let TRANS_FER_DOWNLOAD_TYPE: Swift.CShort
+  public static let TRANS_FER_UPLOAD_TYPE: Swift.CShort
+  public static let TRANS_FER_START_DOWNLOAD_BIT_FIELD: Swift.CShort
+  public static let TRANS_FER_START_UPLOAD_BIT_FIELD: Swift.CShort
+  public static let TRANS_FER_NEGOTIATE_MODULE_ID: Swift.UInt8
+  public static let TRANS_FER_NEGOTIATE_COMMAND_ID: Swift.UInt8
+  public static let TRANS_FER_NEGOTIATE_TYPE: Swift.UInt8
+  public static let TRANS_FER_REQUEST_MODULE_ID: Swift.UInt8
+  public static let TRANS_FER_REQUEST_COMMAND_ID: Swift.UInt8
+  public static let TRANS_FER_REQUEST_TYPE: Swift.UInt8
+  public static let TRANS_FER_REPLY_MODULE_ID: Swift.UInt8
+  public static let TRANS_FER_REPLY_COMMAND_ID: Swift.UInt8
+  public static let TRANS_FER_REPLY_TYPE: Swift.UInt8
+  public static let TRANS_FER_NOTIFY_MODULE_ID: Swift.UInt8
+  public static let TRANS_FER_NOTIFY_COMMAND_ID: Swift.UInt8
+  public static let TRANS_FER_NOTIFY_TYPE: Swift.UInt8
+  public static let TRANS_FER_NOTIFY_FINISHED_STATE_CODE: Swift.Int
+  public static let TRANS_FER_NOTIFY_FINISHED_DATA_SIZE: Swift.Int
+  public static let TRANS_FER_NOTIFY_FINISHED_REASON: Swift.Int
+  public static let TRANS_FER_STOP_MODULE_ID: Swift.UInt8
+  public static let TRANS_FER_STOP_COMMAND_ID: Swift.UInt8
+  public static let TRANS_FER_STOP_TYPE: Swift.UInt8
+  public static let TRANS_FER_STOP_REASON: Swift.Int
+  public static let P2P_MID: Swift.UInt8
+  public static let P2P_CID: Swift.UInt8
+  public static let P2P_PING_TYPE: Swift.UInt8
+  public static let P2P_SEND_TYPE: Swift.UInt8
+  public static let P2P_VERSION_TYPE: Swift.UInt8
+  public static let P2P_APP_INSTALL_TYPE: Swift.UInt8
+  public static let P2P_QUERY_WATCH_SIZE_TYPE: Swift.UInt8
+  public static let PING_PHONE_APP_NOT_EXIST: Swift.Int
+  public static let PING_PHONE_APP_NOT_RUNNING: Swift.Int
+  public static let BOARD_FILE_REAL_PATH_PREFIX: Swift.String
+  public static let SAND_BOX_PATH_PREFIX: Swift.String
+  public static let APP_STORE_MID: Swift.UInt8
+  public static let APP_STORE_CID: Swift.UInt8
+  public static let APP_STORE_INSTALL_TYPE: Swift.UInt8
+  public static let APP_STORE_APP_LIST: Swift.UInt8
+  @objc deinit
+}
+public struct ErrCode {
+}
+public struct Capability {
+}
+public struct NotificationTemplate {
+}
+@objc @_inheritsConvenienceInitializers public class AppInfo : ObjectiveC.NSObject {
+  public var name: Swift.String?
+  public var packageName: Swift.String?
+  public var status: Swift.Int?
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias onError = ((_ notification: WatchConnectKit.BLNotification, _ errorCode: Swift.Int, _ errorMsg: Swift.String) -> Swift.Void)
+public typealias onResult = ((_ notification: WatchConnectKit.BLNotification, _ feedback: Swift.Int) -> Swift.Void)
+public struct BLNotification {
+}
+public struct Device : Swift.Codable {
+  public let model: Swift.String
+  public let name: Swift.String
+  public let uuid: Swift.String
+  public let productType: Swift.Int?
+  public let reservedness: Swift.String
+  public let softwareVersion: Swift.String
+  public let isConnected: Swift.Bool
+  public let p2pCapability: Swift.Int?
+  public let notifyCapability: Swift.Int?
+  public let sensorCapability: Swift.Int?
+  public let deviceType: Swift.Int?
+  public init(model: Swift.String, name: Swift.String, uuid: Swift.String, productType: Swift.Int?, reservedness: Swift.String, softwareVersion: Swift.String, isConnected: Swift.Bool, p2pCapability: Swift.Int?, notifyCapability: Swift.Int?, sensorCapability: Swift.Int?, deviceType: Swift.Int?)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct Message : Swift.Codable {
+  public let type: Swift.Int?
+  public let data: [Swift.UInt8]
+  public let description: Swift.String
+  public let srcFilePath: Swift.String
+  public let dstFilePath: Swift.String
+  public init(type: Swift.Int?, data: [Swift.UInt8], description: Swift.String, srcFilePath: Swift.String, dstFilePath: Swift.String)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct Peer {
+  public var device: WatchConnectKit.Device
+  public var fingerPrint: Swift.String
+  public var srcPkgName: Swift.String
+  public var dstPkgName: Swift.String
+  public init(device: WatchConnectKit.Device, fingerPrint: Swift.String, srcPkgName: Swift.String, dstPkgName: Swift.String)
+}
+extension WatchConnectKit.Peer {
+  public func getDevice() -> WatchConnectKit.Device
+  public func getFingerPrint() -> Swift.String
+  public func getSrcPkgName() -> Swift.String
+  public func getDstPkgName() -> Swift.String
+}
+@objc @_hasMissingDesignatedInitializers public class ConnectedThread : Foundation.Thread, Foundation.StreamDelegate {
+  public var onSendReceiveDataListener: (any WatchConnectKit.OnSendReceiveDataListener)?
+  public func sendBTData(_ bytes: [Swift.UInt8])
+  public func cancel() -> Swift.Bool
+  @objc deinit
+}
+public protocol OnSendReceiveDataListener : AnyObject {
+  func onSendDataSuccess(_ data: [Swift.UInt8])
+  func onSendDataError(_ data: [Swift.UInt8], errorMsg: Swift.String)
+  func onReceiveDataSuccess(buffer: [Swift.UInt8])
+  func onReceiveDataError(errorMsg: Swift.String)
+}
+@_hasMissingDesignatedInitializers public class DataListener : WatchConnectKit.OnSendReceiveDataListener {
+  public func onSendDataSuccess(_ data: [Swift.UInt8])
+  public func onSendDataError(_ data: [Swift.UInt8], errorMsg: Swift.String)
+  public func onReceiveDataSuccess(buffer: [Swift.UInt8])
+  public func onReceiveDataError(errorMsg: Swift.String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class QueueMessageItem {
+  public enum MessageType {
+    case RQ
+    case RR
+    case L
+    public static func == (a: WatchConnectKit.QueueMessageItem.MessageType, b: WatchConnectKit.QueueMessageItem.MessageType) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class Utils {
+  public static func shortToLittleByteList(n: Swift.CShort) -> [Swift.UInt8]
+  public static func intToLittleByteList(n: Swift.Int) -> [Swift.UInt8]
+  public static func crc16(data: [Swift.UInt8]) -> [Swift.UInt8]
+  public static func endianSwap(list: inout [Swift.UInt8])
+  public static func bitToByte(bit: Swift.String?) -> Swift.UInt8
+  public static func bytesArrayToHexString(b: [Swift.UInt8], length: Swift.Int) -> Swift.String
+  public static func hexStrToString(_ hexString: Swift.String) -> Swift.String
+  public static func stringToBytes(str: Swift.String) -> [Swift.UInt8]
+  public static func arraycopy<T>(_ source: [T], sourcePos: Swift.Int, destination: inout [T], destinationPos: Swift.Int, length: Swift.Int)
+  public static func convertList(object: Swift.AnyObject) -> [[Swift.UInt8]]
+  public static func byteListToLittleInt(array: [Swift.UInt8]) -> Swift.Int
+  public static func byteToString(byte: [Swift.UInt8]) -> Swift.String
+  public static func jsonToDictionary(jsonString: Swift.String) -> Swift.Dictionary<Swift.String, Any>
+  @objc deinit
+}
+extension WatchConnectKit.KitState : Swift.Equatable {}
+extension WatchConnectKit.KitState : Swift.Hashable {}
+extension WatchConnectKit.FrameStatus : Swift.Equatable {}
+extension WatchConnectKit.FrameStatus : Swift.Hashable {}
+extension WatchConnectKit.TaskType : Swift.Equatable {}
+extension WatchConnectKit.TaskType : Swift.Hashable {}
+extension WatchConnectKit.FrameType : Swift.Equatable {}
+extension WatchConnectKit.FrameType : Swift.Hashable {}
+extension WatchConnectKit.QueueMessageItem.MessageType : Swift.Equatable {}
+extension WatchConnectKit.QueueMessageItem.MessageType : Swift.Hashable {}
