@@ -13,16 +13,23 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/EastApex/EAHisCompressLib.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '13.0'
-  s.swift_version = '5.9'  # 改为单数形式
+  s.swift_version = '5.9'
   s.frameworks = 'UIKit', 'Foundation', 'CoreGraphics'
   s.source_files = '*.swift'
 
-  # 添加编译标志来解决C99兼容性问题
+  # 详细配置编译选项来解决模块冲突
   s.pod_target_xcconfig = {
-    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
-    'CLANG_CXX_LIBRARY' => 'libc++',
-    'GCC_C_LANGUAGE_STANDARD' => 'c99',
-    'OTHER_SWIFT_FLAGS' => '-DSWIFT_PACKAGE'
+    'DEFINES_MODULE' => 'YES',
+    'SWIFT_COMPILATION_MODE' => 'wholemodule',
+    'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'NO',
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'NO',
+    'ENABLE_BITCODE' => 'NO', # 如果不需要bitcode可以关闭
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64', # 针对模拟器架构
+    'OTHER_SWIFT_FLAGS' => '-Xfrontend -disable-implicit-swift-modules'
+  }
+
+  s.user_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }
 
   s.ios.vendored_frameworks = [
