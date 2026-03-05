@@ -39,7 +39,21 @@ DESC
         'SCompressLib.framework',
         'WatchConnectKit.framework'
     ]
+  # ========== 新增：强制开启C99编译标准 ==========
+  s.pod_target_xcconfig = {
+    # 统一C语言标准为C99
+    'CLANG_C_LANGUAGE_STANDARD' => 'c99',
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'gnu99',
+    # 关闭严格的未定义变量检查（避免脚本报错）
+    'GCC_NO_COMMON_BLOCKS' => 'YES',
+    'ENABLE_STRICT_OBJC_MSGSEND' => 'NO'
+  }
 
+  # ========== 新增：让主项目继承该配置 ==========
+  s.user_target_xcconfig = {
+    'CLANG_C_LANGUAGE_STANDARD' => 'c99',
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'gnu99'
+  }
 
 
   
